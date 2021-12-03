@@ -1,0 +1,133 @@
+﻿@model EDU_Models.ViewModels.BatchinfoVM
+@using  EDU_Utility;
+@{
+    var title = "Create Batch";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if (Model.InfoBatch.Id != 0)
+    {
+        title = "Edit Batch";
+        <input asp-for="InfoBatch.Id" hidden />
+    }
+    <div class="border p-3 bg-white">
+
+        <div class="form-group row py-2">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="InfoBatch.BatchNo"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="InfoBatch.BatchNo" class="form-control" />
+                        <span asp-validation-for="InfoBatch.BatchNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="InfoBatch.Title"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="InfoBatch.Title" class="form-control" />
+                        <span asp-validation-for="InfoBatch.Title" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="InfoBatch.Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="InfoBatch.Description" class="form-control summernote"></textarea>
+                        <span asp-validation-for="InfoBatch.Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="InfoBatch.DepartmentId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="InfoBatch.DepartmentId" asp-items="@Model.DepartmentSelectList" class="form-select">
+                            <option disabled selected>--Select Department--</option>
+                        </select>
+                        <span asp-validation-for="InfoBatch.DepartmentId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="InfoBatch.ShiftId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="InfoBatch.ShiftId" asp-items="@Model.ShiftInfoSelectList" class="form-select">
+                            <option disabled selected>--Select Shift--</option>
+                        </select>
+                        <span asp-validation-for="InfoBatch.ShiftId" class="text-danger"></span>
+                    </div>
+                </div>
+                @* <div class="form-group row py-2">
+            <div class="col-4">
+                <label asp-for="Batchinfo.ShiftSelected"></label>
+            </div>
+            <div class="col-8">
+                <select asp-for="Batchinfo.ShiftSelected" asp-items="@Model.Batchinfo.ShiftList" class="form-select">
+                    <option disabled selected>--Select Shift--</option>
+                </select>
+                <span asp-validation-for="Batchinfo.ShiftSelected" class="text-danger"></span>
+            </div>
+            </div>
+
+        </div>*@
+
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row py-2">
+
+                        <div class="col">
+                            @if (Model.InfoBatch.Id != 0)
+                            {
+                                //update
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                //create
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Create" />
+                            }
+
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 ">
+                @* Keep this empty *@
+              
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height:250
+            });
+        });
+        
+    </script>
+}

@@ -1,0 +1,220 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@using EDU_Utility
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EDU CLASS ROOM</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link href="~/FontAwesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <!-- Boxiocns CDN Link -->
+    <link rel="stylesheet" href="~/css/layout_Style.css" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <style type="text/css">
+        body {
+            background-image: url('/Images/New Picture_Sk_Final.jpg');
+            margin: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <div class="sidebar close">
+        <div class="logo-details">
+
+            <i class='bx bxs-registered'></i>
+            <span class="logo_name">EDU</span>
+        </div>
+
+        <ul class="nav-links">
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                @*<li>
+                        <a id="register" asp-area="" asp-controller="Account"  asp-page="/Account/Register">
+                            <i class='bx bxs-user-plus'></i>
+                            <span class="link_name">Register</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link_name" id="login" asp-area="" asp-page="/Account/Login">
+                            <i class='bx bx-log-in'></i>
+                            <span class="link_name">Login </span>
+                        </a>
+                    </li>*@
+
+                <li class="nav-item">
+                    <a id="register" class="nav-item" asp-controller="Account" asp-action="Register">
+                        <i class='bx bxs-user-plus'></i>
+                        <span class="link_name">Register</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="login" class="nav-item" asp-controller="Account" asp-action="Login">
+                        <i class='bx bx-log-in'></i>
+                        <span class="link_name">Login </span>
+                    </a>
+                </li>
+            }
+            <li>
+
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+
+                @*<ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Category</a></li>
+                    </ul>*@
+            </li>
+            @if (User.IsInRole(WC.AdminRole))
+            {
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bxs-component'></i>
+                            <span class="link_name">Management</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Management</a></li>
+                        <li><a asp-area="" asp-controller="DepartmentInfo" asp-action="Index">Department Info</a></li>
+                        <li><a asp-area="" asp-controller="SemesterInfo" asp-action="Index">Semester Info</a></li>
+                        <li><a asp-area="" asp-controller="Batchinfo" asp-action="Index">Batch Info</a></li>
+                        <li><a asp-area="" asp-controller="Student" asp-action="Index">Student Info</a></li>
+                        <li><a asp-area="" asp-controller="AdminInfo" asp-action="Index">Admin Info</a></li>
+                        <li><a asp-area="" asp-controller="TeacherInfo" asp-action="Index">Teacher Info</a></li>
+                        <li><a asp-area="" asp-controller="Announcement" asp-action="Index">Announcement</a></li>
+                        <li><a asp-area="" asp-controller="CourseInfo" asp-action="Index">CourseInfo</a></li>
+                        <li><a asp-area="" asp-controller="Enrollment" asp-action="Index">Enrollment</a></li>
+
+                        <li><a asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Type</a></li>
+                        <li><a asp-area="" asp-controller="Product" asp-action="Index">Product</a></li>
+
+                        <li><a asp-area="Identity" asp-page="/Account/Register">Create Admin User</a></li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bxs-component'></i>
+                            <span class="link_name">Order</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Order</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Inquiry" asp-action="Index">Inquiry</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="Index">Order List</a></li>
+                    </ul>
+                </li>
+
+            }
+            <li>
+                @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart) != null)
+                {
+                    <a asp-action="Index" asp-controller="Cart">
+
+                        @{
+                            var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count;
+                        }
+                        <i class='bx bxs-cart'></i>
+                        <span class="link_name">(@count) Shopping Cart</span>
+                    </a>
+                }
+                else
+                {
+                    <a href="#">
+
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="link_name">(0) Shopping Cart</span>
+                    </a>
+                }
+            </li>
+
+            <li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="profile-details">
+                        <div class="name-job">
+
+                            @*<div class="profile_name">
+                                    <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)!</a>
+                                </div>*@
+                            <div class="profile_name">
+                                <a id="manage" asp-controller="Account" asp-action="LogOff" title="Manage">@UserManager.GetUserName(User)!</a>
+                            </div>
+
+                            @if (User.IsInRole(WC.AdminRole))
+                            {
+                                <div class="job">@WC.AdminRole</div>
+                            }
+                            else if (User.IsInRole(WC.TeacherRole))
+                            {
+                                <div class="job">@WC.TeacherRole</div>
+                            }
+                            else
+                            {
+                                <div class="job">@WC.StudentRole</div>
+                            }
+                        </div>
+                        @*<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="logout" type="submit" class="btn btn-danger"><i class='bx bx-log-out'></i></button>
+                            </form>*@
+                        <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="LogOff">
+                            <button id="logout" type="submit" class="btn btn-danger"><i class='bx bx-log-out'></i></button>
+                        </form>
+
+                    </div>
+                }
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <div class="container mb-4 pb-4">
+                <main role="main" class="pb-3">
+                    <partial name="_Notifications" />
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script src="~/js/layout_Script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <ejs-scripts></ejs-scripts>
+</body>
+</html>

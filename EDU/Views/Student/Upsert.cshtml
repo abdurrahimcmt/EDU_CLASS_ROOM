@@ -1,0 +1,223 @@
+﻿@model EDU_Models.ViewModels.StudentInfoVM
+@using  EDU_Utility;
+@{
+    var title = "Create Student";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if (Model.StudentInfo.Id != 0)
+    {
+        title = "Edit Student";
+        <input asp-for="StudentInfo.Id" hidden />
+    }
+    <div class="border p-3 bg-white">
+
+        <div class="form-group row py-2">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.StudentId"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.StudentId" class="form-control" />
+                        <span asp-validation-for="StudentInfo.StudentId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.StudentName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.StudentName" class="form-control" />
+                        <span asp-validation-for="StudentInfo.StudentName" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.FathersName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.FathersName" class="form-control" />
+                        <span asp-validation-for="StudentInfo.FathersName" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.MothersName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.MothersName" class="form-control" />
+                        <span asp-validation-for="StudentInfo.MothersName" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.MobileNo"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.MobileNo" class="form-control" />
+                        <span asp-validation-for="StudentInfo.MobileNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.Email"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.Email" class="form-control" />
+                        <span asp-validation-for="StudentInfo.Email" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.Address"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.Address" class="form-control" />
+                        <span asp-validation-for="StudentInfo.Address" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.Date"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StudentInfo.Date" class="form-control" />
+                        <span asp-validation-for="StudentInfo.Date" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.DepartmentId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="StudentInfo.DepartmentId" asp-items="@Model.DepartmentSelectList" class="form-select">
+                            <option disabled selected>--Select Department--</option>
+                        </select>
+                        <span asp-validation-for="StudentInfo.DepartmentId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.BatchId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="StudentInfo.BatchId" asp-items="@Model.BatchSelectList" class="form-select">
+                            <option disabled selected>--Select Batch--</option>
+                        </select>
+                        <span asp-validation-for="StudentInfo.BatchId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.ShiftId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="StudentInfo.ShiftId" asp-items="@Model.ShiftSelectList" class="form-select">
+                            <option disabled selected>--Select Shift--</option>
+                        </select>
+                        <span asp-validation-for="StudentInfo.ShiftId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="StudentInfo.Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="StudentInfo.Description" class="form-control summernote"></textarea>
+                        <span asp-validation-for="StudentInfo.Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        Image
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row py-2">
+
+                        <div class="col">
+                            @if (Model.StudentInfo.Id != 0)
+                            {
+                                //update
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                //create
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Create" />
+                            }
+
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 ">
+                @* Keep this empty *@
+                @if (Model.StudentInfo.Id != 0)
+                {
+                    <img src="@WC.ImagePathStudents@Model.StudentInfo.Image" width="100%" style="border-radius:5px; border:1px solid #bbb" />
+                }
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 250
+            });
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Image!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

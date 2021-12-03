@@ -1,0 +1,175 @@
+﻿@model EDU_Models.ViewModels.AdminInfoVM
+@using  EDU_Utility;
+@{
+    var title = "Create Admin";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if (Model.adminInfo.Id != 0)
+    {
+        title = "Edit Admin";
+        <input asp-for="adminInfo.Id" hidden />
+    }
+    <div class="border p-3 bg-white">
+
+        <div class="form-group row py-2">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="adminInfo.Name" class="form-control" />
+                        <span asp-validation-for="adminInfo.Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.DesignationId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="adminInfo.DesignationId" asp-items="@Model.DesignationSelectList" class="form-select">
+                            <option disabled selected>--Select Department--</option>
+                        </select>
+                        <span asp-validation-for="adminInfo.DesignationId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+                
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.MobileNo"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="adminInfo.MobileNo" class="form-control" />
+                        <span asp-validation-for="adminInfo.MobileNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.Email"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="adminInfo.Email" class="form-control" />
+                        <span asp-validation-for="adminInfo.Email" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.Address"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="adminInfo.Address" class="form-control" />
+                        <span asp-validation-for="adminInfo.Address" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.Date"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="adminInfo.Date" class="form-control" />
+                        <span asp-validation-for="adminInfo.Date" class="text-danger"></span>
+                    </div>
+
+                </div>
+                
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="adminInfo.Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="adminInfo.Description" class="form-control summernote"></textarea>
+                        <span asp-validation-for="adminInfo.Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        Image
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row py-2">
+
+                        <div class="col">
+                            @if (Model.adminInfo.Id != 0)
+                            {
+                                //update
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                //create
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Create" />
+                            }
+
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 ">
+                @* Keep this empty *@
+                @if (Model.adminInfo.Id != 0)
+                {
+                    <img src="@WC.ImagePathAdmin@Model.adminInfo.Image" width="100%" style="border-radius:5px; border:1px solid #bbb" />
+                }
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 250
+            });
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Image!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

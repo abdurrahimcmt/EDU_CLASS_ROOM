@@ -1,0 +1,54 @@
+﻿@model EDU_Models.ViewModels.HomeVM
+@using EDU_Utility
+<div class="container">
+    <div class="text-center">
+    </div>
+    <br />
+    <div class="row">
+        @foreach (var ann in Model.announcement)
+        {
+            <partial name="_IndividualAnnouncement" model="ann" />
+            //display all product
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".filter-button").click(function () {
+
+                var value = $(this).attr('data-filter');
+                if (value == "all") {
+                    $('.filter').show('1000');
+                }
+                else {
+                    $(".filter").not('.' + value).hide('3000');
+                    $('.filter').filter('.' + value).show('3000');
+
+                }
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 250
+            });
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Image!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}
