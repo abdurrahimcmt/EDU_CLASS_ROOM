@@ -20,10 +20,9 @@ namespace EDU.Controllers
         private readonly ISemesterInfoRepository _SemesterRepo;
         private readonly ICourseInfoRepository _CourseInfoRepo;
 
-
         [BindProperty]
         public OrderVM orderVM { get; set; }
-        EnrollmentVM enrollmentVM;
+      
         public EnrollmentController(
             IEnrollmentInfoRepository EnrollmentRepo, IEnrollmentDetailsRepository EnrollementDetailRepo, IStudentRepository StudentRepo, ISemesterInfoRepository SemesterRepo, ICourseInfoRepository CourseInfoRepo)
         {
@@ -33,31 +32,36 @@ namespace EDU.Controllers
             _SemesterRepo = SemesterRepo;
             _CourseInfoRepo = CourseInfoRepo;
         }
-        public IActionResult Index(String studentId = null, String SemesterId = null, String Department = null)
+        public IActionResult Index()
         {
-            
-            if (studentId==null)
+            return View();
+        }
+        public IActionResult Create()
+        {
+            List<CourseInfoCheckList> coursechecklist = new List<CourseInfoCheckList>();
+            var course = _CourseInfoRepo.GetAll(includeProperties: "DepartmentInfo");
+            foreach (var item in course)
             {
-                enrollmentVM = new EnrollmentVM()
+                coursechecklist.Add(new CourseInfoCheckList
                 {
-                    enrollmentInfo = new EnrollmentInfo(),
-                    StudentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.StudentId),
-                    SemesterSelectList = _EnrollmentRepo.GetAllDropDownList(WC.SemesterId),
-                    DepartmentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.DepartmentName),
-                    CourseList = _CourseInfoRepo.GetAll(includeProperties: "DepartmentInfo"),
-                };
+                    Id = item.Id,
+                    Code = item.Code,
+                    Name = item.Name,
+                    DepartmentId = item.DepartmentId,
+                    DepartmentName = item.DepartmentName,
+                });
             }
-            else {
-                if (!string.IsNullOrEmpty(studentId) && studentId != "---StudentId List---")
-                {
-                    
-                    StudentInfo Stu = _StudentRepo.FirstOrDefault(u => u.StudentId == studentId);
-                    studentId = Stu.StudentName;
-                    Department = Stu.DepartmentId.ToString();
-                }
-            }
+            EnrollmentVM enrollmentVM = new EnrollmentVM()
+            {
+                enrollmentInfo = new EnrollmentInfo(),
+                StudentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.StudentId),
+                CourseList = coursechecklist,
+                /*DepartmentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.DepartmentName),*/
+                /*CourseList = _CourseInfoRepo.GetAll(includeProperties: "DepartmentInfo"),*/
 
-           /* if (!string.IsNullOrEmpty(studentId))
+
+            };
+            /*if (!string.IsNullOrEmpty(studentId))
             {
                 orderlistVM.OrderHeaderList = orderlistVM.OrderHeaderList.Where(u => u.FullName.ToLower().Contains(searchName.ToLower()));
             }
@@ -76,6 +80,11 @@ namespace EDU.Controllers
             }*/
             return View(enrollmentVM);
         }
+        /* public IActionResult Search(EnrollmentVM enrollmentVM)
+         {
+             var obj = enrollmentVM;
+             return View(obj);
+         }*/
         /*
                 public IActionResult Details(int id)
                 {
@@ -144,15 +153,12 @@ namespace EDU.Controllers
                     TempData[WC.Success] = "Order Details Updated Successfully";
                     return RedirectToAction("Datails", "Order", new { id = orderHeaderfromDB.Id });
                 }*/
-
-
         #region API CALLS
         [HttpGet]
-        public IActionResult GetCourseList()
+        public IActionResult GetEnrollmentList()
         {
-            return Json(new { data = enrollmentVM.CourseList });
+            return Json(new { data = _EnrollmentRepo.GetAll() });
         }
         #endregion
-
     }
 }

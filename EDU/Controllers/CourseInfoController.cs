@@ -20,20 +20,19 @@ namespace EDU.Controllers
     public class CourseInfoController : Controller
     {
         private readonly ICourseInfoRepository _CourseInfoRepo;
+        private readonly IDepartmentInfoRepository _DepartmentInfoRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public CourseInfoController(ICourseInfoRepository CourseInfoRepo, IWebHostEnvironment webHostEnvironment)
+        public CourseInfoController(ICourseInfoRepository CourseInfoRepo, IWebHostEnvironment webHostEnvironment, IDepartmentInfoRepository DepartmentInfoRepo)
         {
             _CourseInfoRepo = CourseInfoRepo;
             _webHostEnvironment = webHostEnvironment;
+            _DepartmentInfoRepo = DepartmentInfoRepo;
         }
 
 
         public IActionResult Index()
         {
-           
-
             IEnumerable<CourseInfo> objList = _CourseInfoRepo.GetAll(includeProperties:"DepartmentInfo");
-            
 
             //foreach(var obj in objList
             //{
@@ -101,6 +100,8 @@ namespace EDU.Controllers
                     //Creating
                     ApplicationUser user = new ApplicationUser();
                     courseVM.CourseInfo.UserId = user.Id;
+                    var obj = _DepartmentInfoRepo.FirstOrDefault(u => u.Id == courseVM.CourseInfo.DepartmentId);
+                    courseVM.CourseInfo.DepartmentName = obj.Name;
                     _CourseInfoRepo.Add(courseVM.CourseInfo);
                 }
                 else
@@ -109,6 +110,8 @@ namespace EDU.Controllers
                     var objFromDb = _CourseInfoRepo.FirstOrDefault(u => u.Id == courseVM.CourseInfo.Id,isTraking: false);
                     ApplicationUser user = new ApplicationUser();
                     courseVM.CourseInfo.UserId = user.Id;
+                    var obj = _DepartmentInfoRepo.FirstOrDefault(u => u.Id == courseVM.CourseInfo.DepartmentId);
+                    courseVM.CourseInfo.DepartmentName = obj.Name;
                     _CourseInfoRepo.Update(courseVM.CourseInfo);
                     isUpdate = true;
                 }

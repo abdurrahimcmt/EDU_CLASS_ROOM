@@ -15,6 +15,6 @@ namespace EDU_Models.ViewModels
         public IEnumerable<SelectListItem> SemesterSelectList { get; set; }
         public IEnumerable<SelectListItem> DepartmentSelectList { get; set; }
 
-        public IEnumerable<CourseInfo> CourseList { get; set; }
+        public IEnumerable<CourseInfoCheckList> CourseList { get; set; }
     }
 }

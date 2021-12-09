@@ -1,7 +1,7 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    loadDataTable("GetCourseList");
+    loadDataTable("GetEnrollmentList");
 });
 
 function loadDataTable(url) {
@@ -9,19 +9,12 @@ function loadDataTable(url) {
         "ajax": {
             "url": "/Enrollment/" + url
         },
-        'columnDefs': [
-            {
-                'targets': 0,
-                'checkboxes': {
-                    'selectRow': true
-                }
-            }
-        ],
+        'order': [[1, 'asc']],
         "columns": [
-            { "data": "id", "width": "10%" },
-            { "data": "Code", "width": "15%" },
-            { "data": "Name", "width": "15%" },
-            { "data": "DepartmentId", "width": "15%" },
+            { "data": "", "width": "10%" },
+            { "data": "code", "width": "30%" },
+            { "data": "name", "width": "30%" },
+            { "data": "departmentName", "width": "30%" }
             /*{
                 "data": "id",
                 "render": function (data) {
@@ -36,4 +29,9 @@ function loadDataTable(url) {
             }*/
         ]
     });
+   
 }
+
+
+
+

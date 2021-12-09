@@ -1,11 +1,12 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EDU_Models
+namespace EDU_Models.ViewModels
 {
-    public class CourseInfo
+    public class CourseInfoCheckList
     {
         [Key]
         public int Id { get; set; }
@@ -24,6 +25,8 @@ namespace EDU_Models
 
         [ForeignKey("UserId")]
         public string UserId { get; set; }
+
+        public SelectListItem takeCourses { get; set; }
 
     }
 }

@@ -27,7 +27,7 @@ namespace EDU_Models
 
         public CourseInfo CourseInfo { get; set; }
 
-        [NotMapped]
-        public bool isSelect { get; set; }
+        public String CourseName { get; set; }
+
     }
 }
