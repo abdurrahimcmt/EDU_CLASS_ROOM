@@ -27,6 +27,7 @@ namespace EDU_Models
 
         public CourseInfo CourseInfo { get; set; }
 
+        public String Coursecode { get; set; }
         public String CourseName { get; set; }
 
     }

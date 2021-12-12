@@ -1,0 +1,77 @@
+﻿
+@model EDU_Models.ViewModels.EnrollmentVM
+
+<div class="container p-3 bg-white">
+    <form >
+        <p>
+            <input type="search" placeholder="Enter Department" value="@ViewData["SearchString"]" name="searchDepartment" />
+            <input asp-action="listCourse" type="submit" value="Search" class="btn btn-primary" />
+            <a asp-action="listCourse">Get All Employees</a>
+        </p>
+
+
+        <div>
+
+
+            @if (Model.CourseList.Count() > 0)
+            {
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="allcheck" id="selectAll" /> Select All
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var obj in Model.CourseList)
+                        {
+                            <tr>
+                                <td width="20%">
+                                    <input type="hidden" asp-for="@obj.takeCourses.Value" />
+                                    <input asp-for="@obj.takeCourses.Selected" />
+                                    <input type="hidden" asp-for="@obj.Id" />
+                                </td>
+                                <td width="20%">@obj.Code</td>
+                                <td width="30%">@obj.Name</td>
+                                <td width="30%">@obj.DepartmentName</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p> No Course exists.</p>
+            }
+        </div>
+        <button asp-controller="Enrollment" asp-action="SaveEnrollment" class="btn btn-primary form-control">Complete Enrollment</button>
+    </form>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#selectAll").click(function () {
+                $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+            });
+            $("input[type=checkbox]").click(function () {
+                if (!$(this).prop("checked")) {
+                    $("selectAll").prop("checked",false);
+                }
+            });
+        })
+
+    </script>
+}

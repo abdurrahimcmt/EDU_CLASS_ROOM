@@ -81,7 +81,6 @@ namespace EDU
 
 
             /////////Adding Interface In Services 
-            ///
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IDepartmentInfoRepository, DepartmentInfoRepository>();
             services.AddScoped<ISemesterInfoRepository, SemesterInfoRepository>();
@@ -97,6 +96,9 @@ namespace EDU
             services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
             services.AddScoped<IEnrollmentInfoRepository, EnrollmentInofRepository>();
             services.AddScoped<IEnrollmentDetailsRepository, EnrollmentDetailsRepository>();
+            services.AddScoped<IOnlineClassInfoRepository, OnlineClassInofRepository>();
+            services.AddScoped<IOnlineClassDetailsRepository, OnlineClassDetailsRepository>();
+
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();

@@ -215,7 +215,7 @@ namespace EDU.Controllers
                 TempData[WC.Success] = "Your Inquiry has been successfully included";
 
                 string nonceFromTheClient = collection["payment_method_nonce"];
-
+                
                 var request = new TransactionRequest
                 {
                     Amount = Convert.ToDecimal(orderHeader.FinalOrderTotal),
@@ -234,7 +234,6 @@ namespace EDU.Controllers
                 {
                     orderHeader.TransactionId = result.Target.Id;
                     orderHeader.OrderStatus = WC.StatusApproved;
-
                 }
                 else
                 {

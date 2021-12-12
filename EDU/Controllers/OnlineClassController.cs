@@ -12,28 +12,29 @@ using System.Threading.Tasks;
 
 namespace EDU.Controllers
 {
-    public class EnrollmentController : Controller
+    public class OnlineClassController : Controller
     {
-        private readonly IEnrollmentInfoRepository _EnrollmentRepo;
-        private readonly IEnrollmentDetailsRepository _EnrollmentDetailsRepo;
-        private readonly IStudentRepository _StudentRepo;
+        private readonly IOnlineClassInfoRepository _OnlineClassRepo;
+        private readonly IOnlineClassDetailsRepository _OnlineClassDetailsRepo;
+       /* private readonly IStudentRepository _StudentRepo;*/
         private readonly ISemesterInfoRepository _SemesterRepo;
         private readonly ICourseInfoRepository _CourseInfoRepo;
-        public EnrollmentController(
-            IEnrollmentInfoRepository EnrollmentRepo, IEnrollmentDetailsRepository EnrollementDetailRepo, IStudentRepository StudentRepo, ISemesterInfoRepository SemesterRepo, ICourseInfoRepository CourseInfoRepo)
+        private readonly IDepartmentInfoRepository _DepartmentInfoRepo;
+        public OnlineClassController(
+            IOnlineClassInfoRepository OnlineClassRepo, IOnlineClassDetailsRepository OnlineClassDetailsRepo, ISemesterInfoRepository SemesterRepo, ICourseInfoRepository CourseInfoRepo, IDepartmentInfoRepository DepartmentInfoRepo)
         {
-            _EnrollmentRepo = EnrollmentRepo;
-            _EnrollmentDetailsRepo = EnrollementDetailRepo;
-            _StudentRepo = StudentRepo;
+            _OnlineClassRepo = OnlineClassRepo;
+            _OnlineClassDetailsRepo = OnlineClassDetailsRepo;
             _SemesterRepo = SemesterRepo;
             _CourseInfoRepo = CourseInfoRepo;
+            _DepartmentInfoRepo = DepartmentInfoRepo;
         }
         public IActionResult Index()
         {
-            IEnumerable<EnrollmentInfo> objList = _EnrollmentRepo.GetAll(includeProperties: "studentInfo,semesterInfo,departmentInfo");
+            IEnumerable<OnlineClassInfo> objList = _OnlineClassRepo.GetAll(includeProperties: "courseInfo,semesterInfo,departmentInfo");
             return View(objList);
         }
-       
+       /*
         public IActionResult Create(string searchDepartment,string StudentId, string SemesterId, string DepartmentId)
         {
             List<CourseInfoCheckList> coursechecklist = new List<CourseInfoCheckList>();
@@ -58,7 +59,7 @@ namespace EDU.Controllers
                 DepartmentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.DepartmentName),
                 CourseList= coursechecklist
             };
-            /*enrollmentVM.CourseList = coursechecklist;*/
+            *//*enrollmentVM.CourseList = coursechecklist;*//*
             ViewData["SearchString"] = searchDepartment;
             ViewData["StudentId"] = StudentId;
             ViewData["SemesterId"] = SemesterId;
@@ -68,7 +69,7 @@ namespace EDU.Controllers
                 enrollmentVM.CourseList = enrollmentVM.CourseList.Where(u => u.DepartmentName.ToLower().Contains(searchDepartment.ToLower()));
             }
             return View(enrollmentVM);
-        }
+        }*/
 
         /*[HttpGet]
         public IActionResult Create(EnrollmentVM enrollmentVM, string searchDepartment)
@@ -135,7 +136,7 @@ namespace EDU.Controllers
           [ValidateAntiForgeryToken]
           [ActionName("SaveEnrollment")]*/
 
-        [HttpPost]
+       /* [HttpPost]
         public IActionResult SaveEnrollment(EnrollmentVM enrollment)
         {
             EnrollmentVM obj = new EnrollmentVM();
@@ -173,7 +174,7 @@ namespace EDU.Controllers
             }
             _EnrollmentDetailsRepo.Save();
             return RedirectToAction(nameof(Index));
-        }
+        }*/
 
     }
 }

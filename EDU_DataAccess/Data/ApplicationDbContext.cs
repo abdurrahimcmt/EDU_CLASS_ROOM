@@ -30,6 +30,11 @@ namespace EDU_DataAccess.Data
 
         public DbSet<EnrollmentInfo> EnrollmentInfo { get; set; }
         public DbSet<EnrollmentDetails> EnrollmentDetails { get; set; }
+
+
+        public DbSet<OnlineClassInfo> OnlineClassInfo { get; set; }
+
+        public DbSet<OnlineClassDetails> OnlineClassDetails { get; set; }
         public DbSet<StudentInfo> StudentInfo { get; set; }
         public DbSet<ApplicationType> ApplicationType { get; set; }
         public DbSet<Product> Product { get; set; }

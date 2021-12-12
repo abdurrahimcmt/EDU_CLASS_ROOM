@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace EDU_Models
 {
-    public class EnrollmentInfo
+    public class OnlineClassInfo
     {
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Student Id")]
-        public int StudentId { get; set; }
-        [ForeignKey("StudentId")]
-        public virtual StudentInfo studentInfo { get; set; }
+        public String Title { get; set; }
 
-        public String StudentRoll { get; set; }
-        public String StudentName { get; set; }
+        [Display(Name = "Course")]
+        public int CourseId { get; set; }
+        [ForeignKey("CourseId")]
+        public virtual CourseInfo courseInfo { get; set; }
+        public String CourseName { get; set; }
 
         [Display(Name = "Semester")]
         public int SemesterId { get; set; }
