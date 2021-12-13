@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace EDU.Controllers
 {
@@ -136,7 +137,8 @@ namespace EDU.Controllers
           [ActionName("SaveEnrollment")]*/
 
         [HttpPost]
-        public IActionResult SaveEnrollment(EnrollmentVM enrollment)
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveEnrollment(IFormCollection collection, EnrollmentVM enrollment)
         {
             EnrollmentVM obj = new EnrollmentVM();
             obj = enrollment;

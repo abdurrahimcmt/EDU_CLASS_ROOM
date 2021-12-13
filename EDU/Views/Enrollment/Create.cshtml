@@ -20,13 +20,13 @@
 
                             <div class="form-group row py-2">
                                 <div class="col-4">
-                                    <label asp-for="@Model.enrollmentInfo.semesterInfo"></label>
+                                    <label asp-for="@Model.enrollmentInfo.SemesterId"></label>
                                 </div>
                                 <div class="col-8">
-                                    <select asp-for="@Model.enrollmentInfo.semesterInfo" name="SemesterId" value="@ViewData["SemesterId"]" asp-items="@Model.SemesterSelectList" class="form-select">
+                                    <select asp-for="@Model.enrollmentInfo.SemesterId" name="SemesterId" value="@ViewData["SemesterId"]" asp-items="@Model.SemesterSelectList" class="form-select">
                                         <option disabled selected>--Select Semester--</option>
                                     </select>
-                                    <span asp-validation-for="@Model.enrollmentInfo.semesterInfo" class="text-danger"></span>
+                                    <span asp-validation-for="@Model.enrollmentInfo.SemesterId" class="text-danger"></span>
                                 </div>
 
                             </div>

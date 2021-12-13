@@ -1,4 +1,4 @@
-﻿@model EDU_Models.ViewModels.EnrollmentVM
+﻿@model EDU_Models.ViewModels.OnlineClassInfoVM
 <form>
     <div class="container p-4 mb-3">
         <div>
@@ -8,77 +8,59 @@
                         <div class="row" style="padding-top:10px">
                             <div class="form-group row py-2">
                                 <div class="col-4">
-                                    <label asp-for="@Model.enrollmentInfo.StudentId"></label>
+                                    <label asp-for="@Model.OnlineClassInfo.SemesterId"></label>
                                 </div>
                                 <div class="col-8">
-                                    <select asp-for="@Model.enrollmentInfo.StudentId" name="StudentId" value="@ViewData["StudentId"]" asp-items="@Model.StudentSelectList" class="form-select">
-                                        <option disabled selected>--Select StudentId--</option>
+                                    <select asp-for="@Model.OnlineClassInfo.SemesterId"  asp-items="@Model.SemesterSelectList" class="form-select">
+                                        <option disabled selected>--Select SemesterId--</option>
                                     </select>
-                                    <span asp-validation-for="@Model.enrollmentInfo.StudentId" class="text-danger"></span>
+                                    <span asp-validation-for="@Model.OnlineClassInfo.SemesterId" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group row py-2">
                                 <div class="col-4">
-                                    <label asp-for="@Model.enrollmentInfo.semesterInfo"></label>
+                                    <label asp-for="@Model.OnlineClassInfo.TeacherId"></label>
                                 </div>
                                 <div class="col-8">
-                                    <select asp-for="@Model.enrollmentInfo.semesterInfo" name="SemesterId" value="@ViewData["SemesterId"]" asp-items="@Model.SemesterSelectList" class="form-select">
-                                        <option disabled selected>--Select Semester--</option>
+                                    <select asp-for="@Model.OnlineClassInfo.TeacherId"  asp-items="@Model.TeacherSelectList" class="form-select">
+                                        <option disabled selected>--Select Teacher--</option>
                                     </select>
-                                    <span asp-validation-for="@Model.enrollmentInfo.semesterInfo" class="text-danger"></span>
+                                    <span asp-validation-for="@Model.OnlineClassInfo.TeacherId" class="text-danger"></span>
                                 </div>
 
                             </div>
 
                             <div class="form-group row py-2">
                                 <div class="col-4">
-                                    <label asp-for="@Model.enrollmentInfo.DepartmentId"></label>
+                                    <label asp-for="@Model.OnlineClassInfo.DepartmentId"></label>
                                 </div>
-                                <div class="col-6">
-                                    <select asp-for="@Model.enrollmentInfo.DepartmentId" name="DepartmentId" value="@ViewData["DepartmentId"]" asp-items="@Model.DepartmentSelectList" class="form-select">
+                                <div class="col-8">
+                                    <select asp-for="@Model.OnlineClassInfo.DepartmentId"   asp-items="@Model.DepartmentSelectList" class="form-select">
                                         <option disabled selected>--Select Department--</option>
                                     </select>
-                                    <span asp-validation-for="@Model.enrollmentInfo.DepartmentId" class="text-danger"></span>
-                                    <span asp-validation-for="@Model.enrollmentInfo.DepartmentId" class="text-danger"></span>
+                                    <span asp-validation-for="@Model.OnlineClassInfo.DepartmentId" class="text-danger"></span>
+                                    <span asp-validation-for="@Model.OnlineClassInfo.DepartmentId" class="text-danger"></span>
                                 </div>
-
-                                @* <div class="col-2">
-                                        <button asp-action="listCourse" class="h-100 btn btn-info form-control">
-                                            <i class="fas fa-search"></i>Courses
-                                        </button>
-                                    </div>*@
                             </div>
                         </div>
-                        <!--<div class="row pt-2">-->
-                        @**@
-                        <!--<div class="col-4">
-
-                        </div>
-                        <div class="offset-4 col-4">
-                            <a asp-action="Search" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i>Courses</a>-->
-                        @* <button asp class="h-100 btn btn-info form-control">
-                                <i class="fas fa-search"></i>Search
-                            </button>*@
-                        <!--</div>
-                        </div>-->
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </form>
 <form>
     <p>
-        <input type="search" placeholder="Enter Department" value="@ViewData["SearchString"]" name="searchDepartment" />
+        <input type="search" placeholder="Enter Course" value="@ViewData["SearchString"]" name="searchDepartment" />
         <button asp-action="Create" type="submit"  class="btn btn-primary">Search</button>
-        <a asp-action="Create">Get All Employees</a>
+       @* <a asp-action="Create">Get All Employees</a>*@
     </p>
 </form>
 
 <div>
-    @if (Model.CourseList.Count() > 0)
+    @if (Model.StudentList.Count() > 0)
     {
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
@@ -87,29 +69,27 @@
                         <input type="checkbox" name="allcheck" id="selectAll" /> Select All
                     </th>
                     <th>
-                        Code
+                        StudentId
                     </th>
                     <th>
-                        Name
+                        StudentName
                     </th>
-                    <th>
-                        Department
-                    </th>
+                    
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.CourseList)
+                @foreach (var obj in Model.StudentList)
                 {
                     <tr>
                         <td width="20%">
-                            <input type="hidden" asp-for="@obj.takeCourses.Value" />
-                            <input asp-for="@obj.takeCourses.Selected" />
+                            <input type="hidden" asp-for="@obj.InvitedStudent.Value" />
+                            <input asp-for="@obj.InvitedStudent.Selected" />
                             <input type="hidden" asp-for="@obj.Id" />
                         </td>
-                        <td width="20%">@obj.Code</td>
-                        <td width="30%">@obj.Name</td>
-                        <td width="30%">@obj.DepartmentName</td>
+                        <td width="20%">@obj.StudentId</td>
+                        <td width="30%">@obj.StudentName</td>
+                        
 
                     </tr>
                 }
@@ -118,10 +98,10 @@
     }
     else
     {
-        <p> No Course exists.</p>
+        <p> No Student exists.</p>
     }
 </div>
-<button asp-controller="Enrollment" asp-action="SaveEnrollment" class="btn btn-primary form-control">Complete Enrollment</button>
+<button asp-controller="OnlineClass" asp-action="SaveEnrollment" class="btn btn-primary form-control">Create Class</button>
 @*<div class="container p-3 bg-white">
         <form>
 

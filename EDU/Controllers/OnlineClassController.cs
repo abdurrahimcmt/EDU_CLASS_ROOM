@@ -16,60 +16,67 @@ namespace EDU.Controllers
     {
         private readonly IOnlineClassInfoRepository _OnlineClassRepo;
         private readonly IOnlineClassDetailsRepository _OnlineClassDetailsRepo;
-       /* private readonly IStudentRepository _StudentRepo;*/
+        private readonly IStudentRepository _studentRepo;
         private readonly ISemesterInfoRepository _SemesterRepo;
         private readonly ICourseInfoRepository _CourseInfoRepo;
         private readonly IDepartmentInfoRepository _DepartmentInfoRepo;
         public OnlineClassController(
-            IOnlineClassInfoRepository OnlineClassRepo, IOnlineClassDetailsRepository OnlineClassDetailsRepo, ISemesterInfoRepository SemesterRepo, ICourseInfoRepository CourseInfoRepo, IDepartmentInfoRepository DepartmentInfoRepo)
+            IOnlineClassInfoRepository OnlineClassRepo, IOnlineClassDetailsRepository OnlineClassDetailsRepo, ISemesterInfoRepository SemesterRepo, ICourseInfoRepository CourseInfoRepo, IDepartmentInfoRepository DepartmentInfoRepo, IStudentRepository StudentRepo)
         {
             _OnlineClassRepo = OnlineClassRepo;
             _OnlineClassDetailsRepo = OnlineClassDetailsRepo;
             _SemesterRepo = SemesterRepo;
             _CourseInfoRepo = CourseInfoRepo;
             _DepartmentInfoRepo = DepartmentInfoRepo;
+            _studentRepo = StudentRepo;
         }
         public IActionResult Index()
         {
-            IEnumerable<OnlineClassInfo> objList = _OnlineClassRepo.GetAll(includeProperties: "courseInfo,semesterInfo,departmentInfo");
+            IEnumerable<OnlineClassInfo> objList = _OnlineClassRepo.GetAll(includeProperties: "courseInfo,semesterInfo,departmentInfo,teacherInfo");
             return View(objList);
         }
-       /*
-        public IActionResult Create(string searchDepartment,string StudentId, string SemesterId, string DepartmentId)
+
+        public IActionResult Create(string searchDepartment)
         {
-            List<CourseInfoCheckList> coursechecklist = new List<CourseInfoCheckList>();
-            var course = _CourseInfoRepo.GetAll(includeProperties: "DepartmentInfo");
-            foreach (var item in course)
+            List<StudentInfoCheckList> StudentChecklist = new List<StudentInfoCheckList>();
+            var student = _studentRepo.GetAll(includeProperties: "ShiftInfo,DepartmentInfo,InfoBatch");
+            foreach (var item in student)
             {
-                coursechecklist.Add(new CourseInfoCheckList
+                StudentChecklist.Add(new StudentInfoCheckList
                 {
                     Id = item.Id,
-                    Code = item.Code,
-                    Name = item.Name,
-                    DepartmentId = item.DepartmentId,
-                    DepartmentName = item.DepartmentName,
+                    StudentId = item.StudentId,
+                    StudentName = item.StudentName,
+                    FathersName = item.FathersName,
+                    MothersName = item.MothersName,
+                    MobileNo = item.MobileNo,
+                    Email= item.Email,
+                    Address= item.Address,
+                    Date=item.Date,
+                    ShiftId=item.ShiftId,
+                    DepartmentId=item.DepartmentId,
+                    BatchId=item.BatchId,
+                    Image=item.Image,
+                    Description=item.Description,
                 });
             }
-
-            EnrollmentVM enrollmentVM = new EnrollmentVM()
+            OnlineClassInfoVM OnlineClassVM = new OnlineClassInfoVM()
             {
-                enrollmentInfo = new EnrollmentInfo(),
-                StudentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.StudentId),
-                SemesterSelectList = _EnrollmentRepo.GetAllDropDownList(WC.SemesterId),
-                DepartmentSelectList = _EnrollmentRepo.GetAllDropDownList(WC.DepartmentName),
-                CourseList= coursechecklist
+                OnlineClassInfo = new OnlineClassInfo(),
+                SemesterSelectList = _OnlineClassRepo.GetAllDropDownList(WC.SemesterId),
+                CourseSelectList = _OnlineClassRepo.GetAllDropDownList(WC.CourseId),
+                DepartmentSelectList = _OnlineClassRepo.GetAllDropDownList(WC.DepartmentName),
+                TeacherSelectList = _OnlineClassRepo.GetAllDropDownList(WC.TeacherId),
+                StudentList = StudentChecklist
             };
-            *//*enrollmentVM.CourseList = coursechecklist;*//*
-            ViewData["SearchString"] = searchDepartment;
-            ViewData["StudentId"] = StudentId;
-            ViewData["SemesterId"] = SemesterId;
-            ViewData["DepartmentId"] = DepartmentId;
-            if (!String.IsNullOrEmpty(searchDepartment))
+            OnlineClassVM.StudentList = StudentChecklist;
+           
+            /*if (!String.IsNullOrEmpty(searchDepartment))
             {
-                enrollmentVM.CourseList = enrollmentVM.CourseList.Where(u => u.DepartmentName.ToLower().Contains(searchDepartment.ToLower()));
-            }
-            return View(enrollmentVM);
-        }*/
+                OnlineClassVM.StudentList = OnlineClassVM.StudentList.Where(u => u.DepartmentName.ToLower().Contains(searchDepartment.ToLower()));
+            }*/
+            return View(OnlineClassVM);
+        }
 
         /*[HttpGet]
         public IActionResult Create(EnrollmentVM enrollmentVM, string searchDepartment)
@@ -136,45 +143,45 @@ namespace EDU.Controllers
           [ValidateAntiForgeryToken]
           [ActionName("SaveEnrollment")]*/
 
-       /* [HttpPost]
-        public IActionResult SaveEnrollment(EnrollmentVM enrollment)
-        {
-            EnrollmentVM obj = new EnrollmentVM();
-            obj = enrollment;
+        /* [HttpPost]
+         public IActionResult SaveEnrollment(EnrollmentVM enrollment)
+         {
+             EnrollmentVM obj = new EnrollmentVM();
+             obj = enrollment;
 
-            EnrollmentInfo enrollmentinfo = new EnrollmentInfo()
-            {
-                StudentId= obj.enrollmentInfo.StudentId,
-                StudentRoll= obj.enrollmentInfo.studentInfo.StudentId,
-                StudentName= obj.enrollmentInfo.studentInfo.StudentName,
+             EnrollmentInfo enrollmentinfo = new EnrollmentInfo()
+             {
+                 StudentId= obj.enrollmentInfo.StudentId,
+                 StudentRoll= obj.enrollmentInfo.studentInfo.StudentId,
+                 StudentName= obj.enrollmentInfo.studentInfo.StudentName,
 
-                SemesterId= obj.enrollmentInfo.SemesterId,
-                SemesterName= obj.enrollmentInfo.semesterInfo.Name,
-                DepartmentId = obj.enrollmentInfo.DepartmentId,
-                DepartmentName= obj.enrollmentInfo.departmentInfo.Name
-                
-            };
-            _EnrollmentRepo.Add(enrollmentinfo);
-            _EnrollmentRepo.Save();
+                 SemesterId= obj.enrollmentInfo.SemesterId,
+                 SemesterName= obj.enrollmentInfo.semesterInfo.Name,
+                 DepartmentId = obj.enrollmentInfo.DepartmentId,
+                 DepartmentName= obj.enrollmentInfo.departmentInfo.Name
 
-            foreach (var course in obj.CourseList)
-            {
-                if (course.takeCourses.Selected)
-                {
-                    EnrollmentDetails enrollmentDetail = new EnrollmentDetails()
-                    {
-                        EnrollmentId = enrollmentinfo.Id,
-                        CourseId = course.Id,
-                        Coursecode=course.Code,
-                        CourseName=course.Name,
-                       
-                    };
-                    _EnrollmentDetailsRepo.Add(enrollmentDetail);
-                }
-            }
-            _EnrollmentDetailsRepo.Save();
-            return RedirectToAction(nameof(Index));
-        }*/
+             };
+             _EnrollmentRepo.Add(enrollmentinfo);
+             _EnrollmentRepo.Save();
+
+             foreach (var course in obj.CourseList)
+             {
+                 if (course.takeCourses.Selected)
+                 {
+                     EnrollmentDetails enrollmentDetail = new EnrollmentDetails()
+                     {
+                         EnrollmentId = enrollmentinfo.Id,
+                         CourseId = course.Id,
+                         Coursecode=course.Code,
+                         CourseName=course.Name,
+
+                     };
+                     _EnrollmentDetailsRepo.Add(enrollmentDetail);
+                 }
+             }
+             _EnrollmentDetailsRepo.Save();
+             return RedirectToAction(nameof(Index));
+         }*/
 
     }
 }

@@ -32,6 +32,8 @@ namespace EDU_Utility
         public const string SemesterId = "SemesterId";
         public const string CourseId = "CourseId";
 
+        public const string TeacherId = "TeacherId";
+
         public const string Designation = "Designation";
 
         public const string University = "University";

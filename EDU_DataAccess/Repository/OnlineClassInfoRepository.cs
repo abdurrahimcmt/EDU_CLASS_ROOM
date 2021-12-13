@@ -46,6 +46,15 @@ namespace EDU_DataAccess.Repository
                     Value = i.Id.ToString()
                 });
             }
+
+            if (obj == WC.TeacherId)
+            {
+                return _db.TeacherInfo.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+            }
             return null;
         }
         public void Update(OnlineClassInfo obj)

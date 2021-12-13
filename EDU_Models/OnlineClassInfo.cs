@@ -12,7 +12,6 @@ namespace EDU_Models
     {
         [Key]
         public int Id { get; set; }
-
         public String Title { get; set; }
 
         [Display(Name = "Course")]
@@ -32,9 +31,13 @@ namespace EDU_Models
         public int DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public virtual DepartmentInfo departmentInfo { get; set; }
-
         public String DepartmentName { get; set; }
 
+        [Display(Name = "Teacher")]
+        public int TeacherId { get; set; }
+        [ForeignKey("TeacherId")]
+        public virtual TeacherInfo teacherInfo { get; set; }
+        public String TeacherName { get; set; }
 
         [ForeignKey("UserId")]
         public string UserId { get; set; }
